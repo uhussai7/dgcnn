@@ -74,7 +74,6 @@ class dti():
 
         S = np.zeros([i.shape[0],XYZ.shape[-1]])
 
-
         #construct the diffusion tensor
         for p in range(0,V1.shape[0]):
             P = np.asarray([V1[p],V2[p],V3[p]])
@@ -176,7 +175,7 @@ class diffVolume():
         self.bvals_sorted=temp_bvals
         self.bvecs_sorted=temp_bvecs
         self.inds=temp_inds
-        self.inds=np.asarray(self.inds)
+        #self.inds=np.asarray(self.inds)
 
         #make the kdtree for each shell
         for bvecs in self.bvecs_sorted:
