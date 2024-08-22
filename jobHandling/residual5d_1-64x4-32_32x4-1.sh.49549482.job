@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=32000
+#SBATCH --time=48:00:00
+#SBATCH --gres=gpu:v100:2
+
+#SBATCH --job-name=residual5d_1-64x4-32_32x4-1.sh
+#SBATCH --account=ctb-akhanf
+#SBATCH --output=/home/u2hussai/dgcnn/jobs/residual5d_1-64x4-32_32x4-1.sh.%A.out
+echo CMD: ./residual5d_1-64x4-32_32x4-1.sh
+echo START_TIME: `date`
+cd /home/u2hussai/dgcnn
+./residual5d_1-64x4-32_32x4-1.sh
+RETURNVAL=$?
+echo RETURNVAL=$RETURNVAL
+echo END_TIME: `date`
+exit $RETURNVAL

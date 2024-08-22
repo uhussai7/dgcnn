@@ -1,0 +1,643 @@
+CMD: ./experiments.sh
+START_TIME: Sun 15 Aug 2021 10:54:17 PM EDT
+/home/u2hussai/.local/lib/python3.8/site-packages/numpy/core/_asarray.py:102: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
+  return array(a, dtype, copy=False, order=order)
+/home/u2hussai/.local/lib/python3.8/site-packages/stripy/spherical.py:1438: RuntimeWarning: invalid value encountered in arccos
+  angles = np.arccos((extxyz * vertxyz).sum(axis=1))
+Loading training data
+Path is /home/u2hussai/scratch/dtitraining/downsample_cut_pad/sub-181131//6/
+Reading niftis..
+[-1, 0, 7]
+(7,)
+0 0
+1 7
+0
+1
+2
+3
+4
+144
+Path is /home/u2hussai/scratch/dtitraining/downsample_cut_pad/sub-181131//90/
+Reading niftis..
+144
+the shape of X is  torch.Size([891, 16, 16, 16, 6])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Loading validation set
+Path is /home/u2hussai/scratch/dtitraining/downsample_cut_pad/sub-942658//6/
+Reading niftis..
+[-1, 0, 7]
+(7,)
+0 0
+1 7
+0
+1
+2
+3
+4
+144
+Path is /home/u2hussai/scratch/dtitraining/downsample_cut_pad/sub-942658//90/
+Reading niftis..
+144
+0
+1
+2
+3
+4
+0
+1
+2
+3
+4
+Cin is 24
+Nshells 1
+Ndir 6
+cINP IS 4
+Length of activation list is 4
+0
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.4729, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.4176, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3973, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3932, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3573, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3698, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3640, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3482, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3608, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3553, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3445, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3361, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3316, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3507, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3318, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3259, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3088, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3306, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3981, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3754, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3775, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2961, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2979, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2767, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2765, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3407, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2833, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2775, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2697, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2653, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2557, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2836, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2651, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2563, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2611, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2576, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2546, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2569, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2431, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2442, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2495, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2390, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2505, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2349, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2210, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2259, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2273, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2242, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2272, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2198, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2120, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2012, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2136, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2089, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1934, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2138, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2037, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1885, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1821, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2007, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2034, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.2432, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1733, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1704, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1868, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1787, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1678, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1773, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1679, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1612, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1799, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1913, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1762, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1799, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1697, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1577, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1395, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1586, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1715, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1673, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1576, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1693, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1568, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1453, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1570, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1464, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1460, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1708, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1540, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1547, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1519, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1530, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1366, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1181, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1496, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1383, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1391, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1287, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1376, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1030, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1265, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1244, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1266, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1045, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1204, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1236, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1171, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0966, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1553, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1195, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0995, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1041, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1334, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0965, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0897, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1032, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0958, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1073, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0896, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0810, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1220, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1046, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1113, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1094, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1122, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0934, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0883, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1350, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1154, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1287, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1245, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1226, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0979, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0897, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0929, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1045, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1241, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0964, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1532, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0940, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0963, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0857, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1101, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1031, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1432, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0943, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0859, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1027, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3941, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1096, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1109, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0944, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0723, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1479, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0854, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0839, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0749, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0946, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0686, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0642, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0671, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1083, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0653, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0737, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0815, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0839, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0826, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0725, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0646, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0849, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0966, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0818, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0886, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0983, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0689, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0611, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0873, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1001, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0847, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0866, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1256, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0796, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0693, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0797, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0880, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0765, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0911, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1248, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0873, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0850, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0692, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0513, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0563, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0771, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1092, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0844, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0693, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0878, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0587, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0741, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0882, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0819, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0581, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0889, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0705, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0729, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0616, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0787, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0533, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0601, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0782, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1189, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0599, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0586, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0944, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0737, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0756, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0685, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0669, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0706, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0543, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0738, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0816, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0534, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0749, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0800, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0660, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0545, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0740, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0578, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0672, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0848, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0751, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0588, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0551, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0568, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0647, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0792, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0692, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0477, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0543, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0509, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0609, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0720, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0585, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0655, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0599, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0498, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0516, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0643, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0703, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0488, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1457, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.1521, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0528, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0666, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0857, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.3322, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0549, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0473, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0522, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0509, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0462, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0460, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0533, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0476, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0466, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0475, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0453, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0548, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0471, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0567, device='cuda:0', grad_fn=<SumBackward0>)
+The shape is torch.Size([1, 16, 16, 16, 24]) and Cin is 24
+tensor(0.0593, device='cuda:0', grad_fn=<SumBackward0>)
+0.1414884676672382
+Traceback (most recent call last):
+  File "experiments.py", line 161, in <module>
+    trnr.train()
+  File "/home/u2hussai/dgcnn/training.py", line 341, in train
+    out_Y_v = self.net(X_v.float().cuda(), self.w_valid[w_ind_v.long(),:,:].float()).detach().cpu()
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/u2hussai/dgcnn/training.py", line 216, in forward
+    x= self.conv3ds(x)
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/nn/parallel/data_parallel.py", line 167, in forward
+    outputs = self.parallel_apply(replicas, inputs, kwargs)
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/nn/parallel/data_parallel.py", line 177, in parallel_apply
+    return parallel_apply(replicas, inputs, kwargs, self.device_ids[:len(replicas)])
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/nn/parallel/parallel_apply.py", line 86, in parallel_apply
+    output.reraise()
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/_utils.py", line 429, in reraise
+    raise self.exc_type(msg)
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/nn/parallel/parallel_apply.py", line 61, in _worker
+    output = module(*input, **kwargs)
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/u2hussai/dgcnn/training.py", line 170, in forward
+    x = conv(x)
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/u2hussai/dgcnn/training.py", line 141, in forward
+    x=self.activation(self.conv(x))
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/u2hussai/.local/lib/python3.8/site-packages/torch/nn/modules/conv.py", line 520, in forward
+    return F.conv3d(input, self.weight, self.bias, self.stride,
+RuntimeError: Given groups=1, weight of size [24, 8, 3, 3, 3], expected input[1, 6, 16, 16, 16] to have 8 channels, but got 6 channels instead
+
+RETURNVAL=1
+END_TIME: Sun 15 Aug 2021 11:11:45 PM EDT

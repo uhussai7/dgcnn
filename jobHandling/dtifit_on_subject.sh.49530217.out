@@ -1,0 +1,5 @@
+CMD: ./dtifit_on_subject.sh /accuracy1.png/
+START_TIME: Sat 26 Jun 2021 11:59:08 PM EDT
+/var/spool/slurmd/job49530217/slurm_script: line 12: ./dtifit_on_subject.sh: No such file or directory
+RETURNVAL=127
+END_TIME: Sat 26 Jun 2021 11:59:08 PM EDT

@@ -1,0 +1,6 @@
+CMD: ./residual5d_1-64x4-32_32x4-1.sh
+START_TIME: Sun 27 Jun 2021 06:15:46 PM EDT
+./residual5d_1-64x4-32_32x4-1.sh: line 7: 21594 Killed                  python3 rough.py 1,64,64,64,64,32 32,32,32,32,1
+RETURNVAL=137
+END_TIME: Sun 27 Jun 2021 06:38:29 PM EDT
+slurmstepd: error: Detected 1 oom-kill event(s) in step 49549482.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.

@@ -1,0 +1,3 @@
+CMD: ./experiments.sh 12
+START_TIME: Tue 21 Sep 2021 01:39:50 PM EDT
+slurmstepd: error: *** JOB 52516330 ON gra1180 CANCELLED AT 2021-09-21T23:36:05 ***

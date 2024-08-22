@@ -1,0 +1,458 @@
+CMD: ./experimentsS0.sh 18
+START_TIME: Wed 29 Sep 2021 10:15:29 AM EDT
+Loading training data
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-395251//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-395251//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-395251//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-395251//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-346945//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-346945//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-346945//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-346945//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-176744//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-176744//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-176744//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-176744//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-124220//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-124220//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-124220//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-124220//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-284646//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-284646//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-284646//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-284646//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-181131//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-181131//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-181131//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-181131//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-204016//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-204016//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-204016//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-204016//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-833148//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-833148//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-833148//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-833148//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-151728//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-151728//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-151728//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-151728//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-664757//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-664757//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-664757//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-664757//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-117930//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-117930//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-117930//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-117930//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-134223//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-134223//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-134223//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-134223//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-146331//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-146331//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-146331//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-146331//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-469961//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-469961//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-469961//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-469961//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-100206//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-100206//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-100206//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-100206//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-942658//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-942658//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-942658//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-942658//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-304020//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-304020//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-304020//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-304020//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-124624//6/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-124624//6/
+144
+Path is /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-124624//90/
+Reading niftis from /home/u2hussai/project/u2hussai/scratch_14Sept21/dtitraining/downsample_cut_pad/sub-124624//90/
+144
+NormalizingS0
+Computing stats for inputs
+computing finite mean and std
+zero mean 1 std
+including structural
+computing finite mean and std
+computing finite mean and std
+the shape of X is  torch.Size([891, 16, 16, 16, 1])
+the shape of T1 is  torch.Size([891, 16, 16, 16])
+the shape of T2 is  torch.Size([891, 16, 16, 16])
+Concatenating T1, T2 and diffusion
+Computing stats from labels
+computing finite mean and std
+Attempting to concatenate tensors
+Successfully concatenated tensors
+Cin is 1
+torch.Size([5625, 3, 16, 16, 16]) torch.Size([5625, 16, 16, 16])
+Starting training
+Epoch:  0
+0.04356300019757198
+Epoch:  1
+0.030983025548434368
+Epoch:  2
+0.028649305703901826
+Epoch:  3
+0.026219978067895746
+Epoch:  4
+0.02410254240341682
+Epoch:  5
+0.02278883944043476
+Epoch:  6
+0.02160455461205986
+Epoch:  7
+0.020511766494747848
+Epoch:  8
+0.01983544223839417
+Epoch     9: reducing learning rate of group 0 to 5.0000e-05.
+Epoch:  9
+0.018633276817483196
+Epoch:  10
+0.01707725234250534
+Epoch:  11
+0.016506256944576872
+Epoch:  12
+0.015808680053596955
+Epoch:  13
+0.015151183707723082
+Epoch:  14
+0.014836128223881112
+Epoch:  15
+0.014287543222207266
+Epoch:  16
+0.013957002050605459
+Epoch    17: reducing learning rate of group 0 to 2.5000e-05.
+Epoch:  17
+0.013367980141848177
+Epoch:  18
+0.0123872192765009
+Epoch:  19
+0.012156934388718219
+Epoch:  20
+0.011821782214171657
+Epoch:  21
+0.011549622735735723
+Epoch:  22
+0.011365814868688984
+Epoch:  23
+0.011160308317400955
+Epoch:  24
+0.010925474595191836
+Epoch    25: reducing learning rate of group 0 to 1.2500e-05.
+Epoch:  25
+0.01082652887561629
+Epoch:  26
+0.010215669091871415
+Epoch:  27
+0.010073302636931314
+Epoch:  28
+0.00998977281286926
+Epoch:  29
+0.009840267711098001
+Epoch:  30
+0.009722078196499569
+Epoch:  31
+0.009587563011043555
+Epoch:  32
+0.009486212529390832
+Epoch    33: reducing learning rate of group 0 to 6.2500e-06.
+Epoch:  33
+0.009826718769535486
+Epoch:  34
+0.009288970825027795
+Epoch:  35
+0.009154724177865906
+Epoch:  36
+0.00907104160691805
+Epoch:  37
+0.009038873632383823
+Epoch:  38
+0.008954866799784847
+Epoch:  39
+0.008872226421649091
+Epoch:  40
+0.00882807119420507
+Epoch    41: reducing learning rate of group 0 to 3.1250e-06.
+Epoch:  41
+0.009838294777476646
+Epoch:  42
+0.009497871173063204
+Epoch:  43
+0.009251515588179564
+Epoch:  44
+0.009097876157922822
+Epoch:  45
+0.008994740673179513
+Epoch:  46
+0.008904536475063562
+Epoch:  47
+0.00882712527301687
+Epoch:  48
+0.008765985767829738
+Epoch    49: reducing learning rate of group 0 to 1.5625e-06.
+Epoch:  49
+0.01096518117232694
+RETURNVAL=0
+END_TIME: Wed 29 Sep 2021 01:28:57 PM EDT

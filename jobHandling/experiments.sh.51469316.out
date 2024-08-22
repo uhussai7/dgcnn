@@ -1,0 +1,8 @@
+CMD: ./experiments.sh
+START_TIME: Mon 23 Aug 2021 01:50:43 PM EDT
+Traceback (most recent call last):
+  File "experiments.py", line 17, in <module>
+    N_subjects =int(sys.argv[1])
+IndexError: list index out of range
+RETURNVAL=1
+END_TIME: Mon 23 Aug 2021 01:50:52 PM EDT

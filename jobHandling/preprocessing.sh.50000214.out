@@ -1,0 +1,5 @@
+CMD: preprocessing.sh /home/u2hussai/scratch/dtitraining/downsample_cut_pad/sub-176744
+START_TIME: Mon 12 Jul 2021 12:30:52 PM EDT
+/var/spool/slurmd/job50000214/slurm_script: line 12: preprocessing.sh: command not found
+RETURNVAL=127
+END_TIME: Mon 12 Jul 2021 12:30:52 PM EDT

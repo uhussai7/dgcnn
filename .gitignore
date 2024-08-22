@@ -1,0 +1,6 @@
+venv/
+data/
+jobs/
+plots/
+scripts_old/
+.venv/
