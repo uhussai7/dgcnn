@@ -1,8 +1,8 @@
 import torch
-from gPyTorch import opool
+from . import gPyTorch
+from .gPyTorch import opool
 from torch.nn.modules.module import Module
 import numpy as np
-
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -10,14 +10,14 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torch.nn import MaxPool2d
-from gPyTorch import gNetFromList
+from .gPyTorch import gNetFromList
 import pickle
 from torch.nn import InstanceNorm3d
 from torch.nn import Conv3d
 from torch.nn import ModuleList
 from torch.nn import DataParallel
 from torch.nn import Linear
-from icosahedron import sphere_to_flat_basis
+from .icosahedron import sphere_to_flat_basis
 import os
 
 def make_dir(directory):
@@ -382,7 +382,7 @@ class residualnet5d(Module):
         return x
 
 class residualnetScalars(Module):
-    def __init__(self, filterlist3d, activationlist3d, filterlist2d, activationlist2d, H, Nshells, Nc,I, J,Nscalar,Ndir,ico):
+    def __init__(self, filterlist3d, activationlist3d, filterlist2d, activationlist2d, H, Nshells, Nc, I, J, Nscalar, Ndir, ico):
         super(residualnetScalars, self).__init__()
         # params
         self.Nshells = Nshells
@@ -417,6 +417,7 @@ class residualnetScalars(Module):
         x= self.gconvs(x)
         x= self.two2t(x)
         return x
+    
 
 class trainer:
     def __init__(self,modelParams,

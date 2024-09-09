@@ -1,5 +1,0 @@
-CMD: ./dtifit_on_subject.sh /home/u2hussai/scratch/dtitraining/downsample_cut_pad/sub-204016/
-START_TIME: Sun 27 Jun 2021 12:00:06 AM EDT
-/var/spool/slurmd/job49530390/slurm_script: line 12: ./dtifit_on_subject.sh: No such file or directory
-RETURNVAL=127
-END_TIME: Sun 27 Jun 2021 12:00:06 AM EDT

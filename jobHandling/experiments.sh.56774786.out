@@ -1,5 +1,0 @@
-CMD: ./experiments.sh 5
-START_TIME: Sat 15 Jan 2022 02:58:38 AM EST
-python3: can't open file 'experiments.py': [Errno 2] No such file or directory
-RETURNVAL=2
-END_TIME: Sat 15 Jan 2022 02:58:48 AM EST

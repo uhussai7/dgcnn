@@ -46,6 +46,49 @@ class dti():
         self.V3 = load(pathprefix + "_V3.nii.gz")
         self.S0 = load(pathprefix + "_S0.nii.gz")
 
+    def signalFromDti(self,bvecs,bval=1000): #signal along bvecs 
+        #bvecs is 3,N and #bval is N
+
+        i,j,k = np.where(self.mask.get_fdata()>0)
+        V1 = self.V1.get_fdata()[i,j,k,:]
+        V2 = self.V2.get_fdata()[i,j,k,:]
+        V3 = self.V3.get_fdata()[i,j,k,:]
+        L1 = self.L1.get_fdata()[i,j,k]
+        L2 = self.L2.get_fdata()[i,j,k]
+        L3 = self.L3.get_fdata()[i,j,k]
+        S0 = self.S0.get_fdata()[i,j,k]
+
+        XYZ=bvecs
+
+        S = np.zeros([i.shape[0],1+XYZ.shape[-1]])
+
+        #construct the diffusion tensor
+        for p in range(0,V1.shape[0]):
+            P = np.asarray([V1[p],V2[p],V3[p]])
+            Pinv = np.linalg.inv(P)
+            Diag = np.diag([L1[p],L2[p],L3[p]])
+            D = np.matmul(Diag,P)
+            D = np.matmul(Pinv,D)
+
+            e = np.matmul(D,XYZ)
+            e = (e*XYZ).sum(0)
+
+            # e = np.zeros(XYZ.shape[1])
+            # for v,xyz in enumerate(XYZ.T):
+            #     this_e = np.matmul(D,xyz)
+            #     this_e = np.matmul(xyz,this_e)
+            #     e[v] = this_e
+            S[p,0]=S0[p]
+            S[p,1:] = S0[p]*np.exp(-bval*e)
+            #S[p,S[p]==S0[p]]=0
+
+        #return the output in numpy format
+        out = np.zeros(self.L1.shape + (1+XYZ.shape[-1],))
+        out[i,j,k] = S
+        #out = out.reshape(self.L1.shape + (h,w))
+
+        return out
+
 
     def icoSignalFromDti(self,ico,bval=1000):
         """

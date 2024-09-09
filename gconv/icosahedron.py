@@ -167,12 +167,12 @@ class icomesh:
             points_=geodesic.grid_to_points(self.grid,self.freq,True,
                                                 [self.vertices[face[i]] for i in range(3)],
                                                 edges[upper_lower])
-            print(len(points_))
-            [print(aaa) for aaa in points_]
+            # print(len(points_))
+            # [print(aaa) for aaa in points_]
             points=[]
             for i in range(0,len(points_)):
                 points.append(points_[len(points_)-1 -i])
-            [print(aaa) for aaa in points]
+            #[print(aaa) for aaa in points]
 
             # points=points_
             # points=np.flip(geodesic.grid_to_points(self.grid,self.freq,True,

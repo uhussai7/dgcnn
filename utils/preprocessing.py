@@ -243,7 +243,20 @@ class training_data:
         self.X = self.X.moveaxis(-1,1)
         self.Y = [S0Y,Y]
 
+        #we need the data for the 3d model also, only the six-d output is needed
+        self.Y_base=self.dti.signalFromDti(self.diff_input.bvecs_sorted[1].T)
+        shp = tuple(xpp.shape) + (self.Y_base.shape[-1],)
+        self.Y_base=self.Y_base[xp,yp,zp,:]
+        
 
+        #X = self.diff_input.vol.get_fdata()[xp,yp,zp,:]
+        #X = X[xp,yp,zp]
+        self.Y_base = self.Y_base.reshape(shp)
+
+        self.Y_base[np.isnan(self.Y_base)]=0
+
+        self.Y_base=(self.Y_base - self.Y_base.mean())/self.Y_base.std()
+        self.Y_base=torch.from_numpy(self.Y_base).moveaxis(-1,1)
 
 
 

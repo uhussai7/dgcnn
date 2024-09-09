@@ -1,3 +1,0 @@
-CMD: ./residual5d.sh
-START_TIME: Thu 24 Jun 2021 10:02:01 PM EDT
-slurmstepd: error: *** JOB 49467710 ON gra1164 CANCELLED AT 2021-06-24T22:02:15 ***

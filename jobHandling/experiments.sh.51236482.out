@@ -1,6 +1,0 @@
-CMD: ./experiments.sh 5
-START_TIME: Tue 17 Aug 2021 11:33:51 PM EDT
-./experiments.sh: line 7: 11414 Killed                  python3 experiments.py $1
-RETURNVAL=137
-END_TIME: Tue 17 Aug 2021 11:35:30 PM EDT
-slurmstepd: error: Detected 1 oom-kill event(s) in StepId=51236482.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.
