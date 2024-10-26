@@ -89,8 +89,9 @@ class training_data:
         N=N_train
 
         ##get coordinates for data extraction
-        occ_inds = np.where(((self.mask>0.00) & (self.FA>0.0)))[0] #extract patches based on mean FA
-        #occ_inds = np.where(self.mask>0.3)[0] #extract patches based on mean FA
+        #occ_inds = np.where(((self.mask>0.00) or (self.FA>0.0)))[0] #extract patches based on mean FA
+        #occ_inds = np.where(self.mask>0.0)[0] #extract patches based on mean FA
+        occ_inds = np.where(self.FA>0.0)[0] #extract patches based on mean FA
         print('Max patches available are ', len(occ_inds))
         #occ_inds = np.where(self.mask>0.5)[0]
         print('N is:', N_train)
@@ -102,7 +103,8 @@ class training_data:
         if N_train is None:
             oi=np.arange(0,len(occ_inds))
         else:
-            oi=np.random.randint(0,len(occ_inds),N) #get random patches
+            #oi=np.random.randint(0,len(occ_inds),N) #get random patches
+            oi=np.random.choice(len(occ_inds),N,replace=False)
         print('using %d patches' % len(oi))
         xpp=self.x[occ_inds[oi]] #extract coordinates
         ypp=self.y[occ_inds[oi]]

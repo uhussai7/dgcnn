@@ -25,36 +25,59 @@ from collections import OrderedDict
 from torch.nn import functional as F
 from . import icosahedron
 from . import dihedral12 as d12
+from pathlib import Path
+import timeit
 
-#here we should build the models but we have to keep things simple,
+# Timing callback
+class TimingCallback(L.Callback):
+    def __init__(self):
+        super().__init__()
+        self.epoch_times = []  # List to store epoch times
 
-#- we have two modules 3d and 2d.
-#-- we have to do just 3d and just 2d.
-#-- we have to do varying 3d and 2d depth, width
+    def on_train_epoch_start(self, trainer, pl_module):
+        # Start the timer at the beginning of each epoch
+        self.epoch_start_time = timeit.default_timer()
+
+    def on_train_epoch_end(self, trainer, *args, **kwargs):
+        # End the timer at the end of each epoch and calculate the elapsed time
+        epoch_end_time = timeit.default_timer()
+        epoch_time = epoch_end_time - self.epoch_start_time
+        self.epoch_times.append(epoch_time)  # Store the epoch time
+
+        # Log the epoch time as a metric
+        trainer.logger.log_metrics({'epoch_time': epoch_time}, step=trainer.current_epoch)
+
+        # Optionally print the epoch time
+        print(f"Epoch {trainer.current_epoch + 1} time: {epoch_time:.4f} seconds")
+
+    def on_train_end(self, *args, **kwargs):
+        # Optionally log the average epoch time at the end of training
+        avg_epoch_time = sum(self.epoch_times) / len(self.epoch_times)
+        print(f"Average epoch time: {avg_epoch_time:.4f} seconds")
 
 
-#we will take instructions from the config file and build the model
+class DgcnnTrainer(L.Trainer):
+    """
+    Class for training the encoder
+    """
+    def __init__(self,cfg,*args,**kwargs): #we do per subject
+        self.cfg=cfg
+        self.out_path=self._create_dir_name(cfg)
+        super().__init__(*args,
+                        default_root_dir=self.out_path,**kwargs)
+        self.write_cfg_yaml()
 
-#we will have 3d layers, 2d layers and mapping between them.
-# the only 3d and only 2d are just seperate to begin with
+    def _create_dir_name(self,cfg):
+        out_path=Path(os.path.join(cfg.PATHS.MODELS_PATH,cfg.MODEL.NAME,
+                                   'Nsubs-%d'%int(cfg.INPUT.NSUBJECTS)))
+        out_path.mkdir(parents=True,exist_ok=True)
+        return str(out_path)
 
-#The one that starts from 2d is different since we have the projected data.
-#-- we can keep it general and project from 3d with the interp matrix (have to c confirm these both were created the same way: Xflat is with interpolation matrices, Y is with ico signal from dti)
-#-- okay so we can just go from the 3d all the time and use the interp matrices to project
-#-- this will help us keep inputs the same for extreme 2d and extreme 3d
-#-- only issue is with pure 3d output, here the the data the will be sent is different (how is it? where are the base models files? Will have to recreate this )
-# -- -- Since we have to change the outputs for the base model, better to just change inputs for the 3d only model also
-# -- so have 3, 2d, 3d, mixed
-# -- mixed: 3d first 2d after, vice versa
-# -- also have to decide what is the width
-# -- lets keep total depth fixed since we know this is what is needed for super res
-# -- so params are: 1) width, 2) 3d/2d depth, and 3) swap (the swap is tricky)
-# -- I think we should stick to 3d first and argue that the 2d is what is upsampling (this is the best option)
+    def write_cfg_yaml(self):
+        with open(str(self.out_path)+'/config.yaml', 'w') as f:
+            f.write(self.cfg.dump())
 
-
-#if 3d is on then we project otherwise we don't?
-
-class dNet(L.LightningModule):
+class DNet(L.LightningModule):
     def __init__(self,cfg,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.cfg=cfg
@@ -62,11 +85,14 @@ class dNet(L.LightningModule):
 
     def _get_model(self,*args,**kwargs):
         if self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.DEPTH_3D == 0:
-            return Lit2dOnly(self.cfg,args,**kwargs)
+            print("Using 2d only model")
+            return Lit2dOnly(self.cfg,*args,**kwargs)
         elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D == 0:
-            return Lit3dOnly(self.cfg,args,**kwargs)
+            print("Using 3d only model")
+            return Lit3dOnly(self.cfg,*args,**kwargs)
         elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0:
-            return LitMixed(self.cfg,args,**kwargs)
+            print("Using mixed model")
+            return LitMixed(self.cfg,*args,**kwargs)
 
     def configure_optimizers(self,*args,**kwargs):
         return self.model.configure_optimizers(*args,**kwargs)
@@ -75,7 +101,10 @@ class dNet(L.LightningModule):
         return self.model.predict_step(*args,**kwargs)
 
     def training_step(self,*args,**kwargs):
-        return self.model.training_step(*args,**kwargs)
+        # return self.model.training_step(*args,**kwargs)
+        loss= self.model.training_step(*args,**kwargs)
+        self.log("train_loss", loss)
+        return loss
 
     def forward(self,*args,**kwargs):
         return self.model.forward(*args,**kwargs)
@@ -114,13 +143,13 @@ class LitMixed(L.LightningModule):
                                         activationlist2d,
                                         cfg.INPUT.H,
                                         cfg.INPUT.NSHELLS,
-                                        cfg.INPUT.N_C,
+                                        cfg.INPUT.NC,
                                         I,
                                         J,
                                         cfg.INPUT.NSCALARS,
                                         cfg.INPUT.NDIRS,
                                         ico)
-        
+
     def training_step(self,batch, batch_idx):
         x,y,w,mask=batch #we need mask too, so different data loaders are needed
         y_hat=self.model(x,w)
@@ -133,11 +162,14 @@ class LitMixed(L.LightningModule):
 
     def configure_optimizers(self):
         optimizer = optim.Adamax(self.model.parameters(), lr=self.cfg.TRAIN.LR)  # , weight_decay=0.001)
-        optimizer.zero_grad()
         scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=self.cfg.TRAIN.FACTOR,
                                       patience=self.cfg.TRAIN.PATIENCE,
                                       verbose=True)
-        return [optimizer], [scheduler]
+        return {'optimizer': optimizer,
+                'lr_scheduler': {'scheduler': scheduler,
+                                 'monitor': 'train_loss'  # Replace 'val_loss' with the metric you want to monitor
+                                }
+                }
 
     def forward(self,x):
         return self.model(x)
@@ -162,27 +194,36 @@ class Lit2dOnly(L.LightningModule): #only the 2d conv
                     [
                         ('move2batch',in2d()),
                         ('gconv',gnet3d(self.cfg.INPUT.H,filterlist2d,self.cfg.INPUT.NSHELLS,activationlist2d)),
-                        ('move2batch_inv',out2d(self.cfg.TRAIN.BATCH_SIZE,self.cfg.INPUT.N_C,self.cfg.INPUT.NSHELLS))
+                        ('move2batch_inv',out2d(self.cfg.TRAIN.BATCH_SIZE,self.cfg.INPUT.NC,self.cfg.INPUT.NSHELLS))
                     ]
                    ))
 
     def training_step(self,batch, batch_idx):
-        x,y,mask=batch #we need mask too, so different data loaders are needed
+        x,y,mask=batch#batch['Xflat'],batch['Y'],batch['mask_train'] #we need mask too, so different data loaders are needed
+        x,y=x.unsqueeze(-3),y.unsqueeze(-3)
         y_hat=self.model(x)
         loss=mse_loss(y[mask==1,:,:],y_hat[mask==1,:,:])
-        self.log("train_loss", loss)
+        #self.log("train_loss", loss)
         return loss
 
     def predict_step(self, batch, batch_idx):
-        pass
+        x,y,mask=batch#batch['Xflat'],batch['Y'],batch['mask_train'] #we need mask too, so different data loaders are needed
+        x,y=x.unsqueeze(-3),y.unsqueeze(-3)
+        y_hat=self.model(x)
+        return y_hat
+
+
 
     def configure_optimizers(self):
         optimizer = optim.Adamax(self.model.parameters(), lr=self.cfg.TRAIN.LR)  # , weight_decay=0.001)
-        optimizer.zero_grad()
         scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=self.cfg.TRAIN.FACTOR,
                                       patience=self.cfg.TRAIN.PATIENCE,
                                       verbose=True)
-        return [optimizer], [scheduler]
+        return {'optimizer': optimizer,
+                'lr_scheduler': {'scheduler': scheduler,
+                                 'monitor': 'train_loss'  # Replace 'val_loss' with the metric you want to monitor
+                                }
+                }
 
     def forward(self,x):
         return self.model(x)
@@ -221,7 +262,11 @@ class Lit3dOnly(L.LightningModule): #only takes 3d convs
         scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=self.cfg.TRAIN.FACTOR,
                                       patience=self.cfg.TRAIN.PATIENCE,
                                       verbose=True)
-        return [optimizer], [scheduler]
+        return {'optimizer': optimizer,
+                'lr_scheduler': {'scheduler': scheduler,
+                                 'monitor': 'train_loss'  # Replace 'val_loss' with the metric you want to monitor
+                                }
+                }
 
     def forward(self,x):
         return self.model(x)
@@ -533,3 +578,34 @@ class residualnetScalars(Module):
         x= self.gconvs(x)
         x= self.two2t(x)
         return x
+    
+
+
+
+#here we should build the models but we have to keep things simple,
+
+#- we have two modules 3d and 2d.
+#-- we have to do just 3d and just 2d.
+#-- we have to do varying 3d and 2d depth, width
+
+
+#we will take instructions from the config file and build the model
+
+#we will have 3d layers, 2d layers and mapping between them.
+# the only 3d and only 2d are just seperate to begin with
+
+#The one that starts from 2d is different since we have the projected data.
+#-- we can keep it general and project from 3d with the interp matrix (have to c confirm these both were created the same way: Xflat is with interpolation matrices, Y is with ico signal from dti)
+#-- okay so we can just go from the 3d all the time and use the interp matrices to project
+#-- this will help us keep inputs the same for extreme 2d and extreme 3d
+#-- only issue is with pure 3d output, here the the data the will be sent is different (how is it? where are the base models files? Will have to recreate this )
+# -- -- Since we have to change the outputs for the base model, better to just change inputs for the 3d only model also
+# -- so have 3, 2d, 3d, mixed
+# -- mixed: 3d first 2d after, vice versa
+# -- also have to decide what is the width
+# -- lets keep total depth fixed since we know this is what is needed for super res
+# -- so params are: 1) width, 2) 3d/2d depth, and 3) swap (the swap is tricky)
+# -- I think we should stick to 3d first and argue that the 2d is what is upsampling (this is the best option)
+
+
+#if 3d is on then we project otherwise we don't?

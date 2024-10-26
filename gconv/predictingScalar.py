@@ -107,38 +107,52 @@ class residual5dPredictorScalar:
 
 
     def predict(self,outpath,batch_size=1):
+        #device
+        device = list(self.net.parameters())[0].device.type
+
+        #params
         H=self.H
         h=self.H+1
         w=5*h
         B = self.X.shape[0]
         shp = self.X.shape[-3:]
+        
+        #empty volumes
         pred_S0Y = torch.zeros((B,)+shp)
         pred_Yflat = torch.zeros((B,)+shp + (h,w))
-        device = list(self.net.parameters())[0].device.type
+        
+        
         print('Starting prediction')
         for i in range(0,self.X.shape[0],batch_size):
         #for i in range(0,1,batch_size):
             print(i)
             torch.cuda.empty_cache()
+            
+            #predictions
             S0Y,Yflat=self.net(self.X[i:i+batch_size].float().to(device),self.interp_matrix.float().to(device))
             print(S0Y.device.type)
             S0Y = S0Y.detach().cpu()
             Yflat = Yflat.detach().cpu()
+            
+            #fill up empty volumes
             pred_S0Y[i:i+batch_size]=S0Y
-            pred_Yflat[i:i+batch_size]= self.Xflat[i:i+batch_size] + Yflat
+            pred_Yflat[i:i+batch_size]= self.Xflat[i:i+batch_size] + Yflat #add input flat
             del S0Y, Yflat
             torch.cuda.empty_cache()
 
-
-        pred_S0Y = pred_S0Y*self.S0Xstd + self.S0Xmean
+        #"unnormalize the data"
+        pred_S0Y = pred_S0Y*self.S0Xstd + self.S0Xmean 
         pred_Yflat = pred_Yflat*self.Xflatstd + self.Xflatmean
 
+        #create new volumes?
         out_S0 = np.zeros(self.pred_data.diff_input.vol.shape[0:3])
         out_flat = np.zeros(self.pred_data.diff_input.vol.shape[0:3] + (h,w))
 
+        #change shape of older volumes
         pred_S0Y = pred_S0Y.view(-1)
         pred_Yflat = pred_Yflat.view(-1,h,w)
 
+        #assign old volumes to new?
         out_S0[self.pred_data.xp,self.pred_data.yp,self.pred_data.zp] = pred_S0Y
         out_flat[self.pred_data.xp,self.pred_data.yp,self.pred_data.zp] = pred_Yflat
 

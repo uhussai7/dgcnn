@@ -16,17 +16,30 @@ class PreprocDataset(Dataset):
         self.data_list = data_list
         self.interp_matrices = interp_matrices
 
+        if interp_matrices is not None:
+            self._getitem = self._getitem_with_matrices
+        else:
+            self._getitem = self._getitem_without_matrices
+
     def __len__(self):
-        return len(self.data_list['X'])
+        return len(self.data_list[list(self.data_list.keys())[0]])
 
     def __getitem__(self, idx):
+        return self._getitem(idx)
+
+    def _getitem_with_matrices(self, idx):
         sample = {key: value[idx] for key, value in self.data_list.items()}
-        if self.interp_matrices:
-            sample['interp_matrix'] = self.interp_matrices[idx]
+        interp_index = sample['interp_inds']
+        print(sample['interp_inds'])
+        sample['interp_matrix'] = self.interp_matrices[int(interp_index.item())]
         return sample
 
-class PreprocDataModule(LightningDataModule):
-    def __init__(self, cfg, batch_size=1, num_workers=4):
+    def _getitem_without_matrices(self, idx):
+        #return {key: value[idx] for key, value in self.data_list.items()} #should this really be returning a dictionary?
+        return [self.data_list[key][idx] for key in self.data_list.keys()] #should this really be returning a dictionary?
+    
+class PreprocData(LightningDataModule):
+    def __init__(self, cfg, batch_size=1, num_workers=4, subj=None): #subj needs to be provided for testing
         super().__init__()
         self.cfg = cfg
         self.batch_size = batch_size
@@ -34,18 +47,20 @@ class PreprocDataModule(LightningDataModule):
         self.N_subjects = cfg.INPUT.NSUBJECTS
         self.data_list = None
         self.interp_matrices = None
+        self.subj=subj
 
     def prepare_data(self):
         # Implement any pre-download or preprocessing steps if needed
         pass
 
-    def setup(self, stage=None):
+    def setup(self, stage):
         if stage == 'fit':
             # Load training data
             in_path = self.cfg.PATHS.TRAINING_PREPROC_PATH
             self.data_list, self.interp_matrices = self._load_data(in_path, testing=False)
+            #print(self.data_list)
 
-        elif stage == 'test':
+        elif stage == 'predict':
             # Load testing data
             in_path = self.cfg.PATHS.TESTING_PREPROC_PATH
             self.data_list, self.interp_matrices = self._load_data(in_path, testing=True)
@@ -54,11 +69,27 @@ class PreprocDataModule(LightningDataModule):
         subjects = os.listdir(in_path)
         data_list = []
         interp_matrices = []
-
-        for s in range(self.N_subjects):
-            subj = subjects[s]
+        if testing==False:
+            print('Loading subjects from path: ', str(in_path))
+            for s in range(self.N_subjects):
+                subj = subjects[s]
+                print(f'Loading subject {subj}')
+                with h5py.File(os.path.join(in_path, subj, 'data.h5'), 'r') as f:
+                    if self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.DEPTH_3D == 0:
+                        data_list.append(self.load_2d_only(f, testing))
+                    elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D == 0:
+                        data_list.append(self.load_3d_only(f, testing))
+                    elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0:
+                        data_list.append(self.load_mixed(f, s, testing))
+                        interp_matrices.append(f['interp_matrix'][:])
+                    else:
+                        raise Exception('Invalid config')
+        else:
+            print('Loading subjects from path: ', str(in_path))
+            subj=self.subj
             print(f'Loading subject {subj}')
-            with h5py.File(os.path.join(in_path, subj, 'data.h5'), 'r') as f:
+            self.data_file=os.path.join(in_path, subj, 'data.h5')
+            with h5py.File(self.data_file, 'r') as f:
                 if self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.DEPTH_3D == 0:
                     data_list.append(self.load_2d_only(f, testing))
                 elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D == 0:
@@ -72,8 +103,12 @@ class PreprocDataModule(LightningDataModule):
         return self.dic_cat(data_list), interp_matrices
 
     def load_2d_only(self, f, testing):
-        keys = ['S0X', 'Xflat', 'S0Y', 'Y', 'mask_train'] if testing else ['Xflat', 'Y', 'mask_train']
-        return {name: torch.tensor(f[name][:]) for name in keys}
+        if testing is False:
+            keys=['Xflat', 'Y', 'mask_train']
+            return {name: torch.tensor(f[name][:]) for name in keys}
+        else:
+            keys = ['Xflat','Y', 'mask_train']#['S0X', 'Xflat', 'S0Y', 'Y', 'mask_train',]
+            return {name: torch.tensor(f[name][:]) for name in keys}
 
     def load_3d_only(self, f, testing):
         keys = ['S0X', 'X', 'S0Y', 'Ybase', 'mask_train'] if testing else ['S0X', 'X', 'S0Y', 'Ybase', 'mask_train']
@@ -105,7 +140,7 @@ class PreprocDataModule(LightningDataModule):
         # Define the validation DataLoader if applicable
         pass
 
-    def test_dataloader(self):
+    def predict_dataloader(self):
         # The setup method ensures data is loaded correctly for testing
         dataset = PreprocDataset(self.data_list, self.interp_matrices if self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 else None)
         return DataLoader(dataset, batch_size=self.batch_size, num_workers=self.num_workers)
@@ -253,7 +288,7 @@ def data_grab(N_subjects,subs_path,b_dirs=6,H=5,Nc=16,N_patch=500):
     return X, Xflat, S0X, Y, S0Y, mask_train, interp_matrix, interp_matrix_ind
 
 
-def data_grab_save_preproc(sub,subs_path,preproc_path,b_dirs=6,H=5,Nc=16,N_patch=500):
+def data_grab_save_preproc(sub,subs_path,preproc_path,b_dirs=6,H=5,Nc=16,N_patch=1000):
     #save preprocessed data as h5 files
 
     print('Loading data from subject: ',sub)
@@ -300,6 +335,19 @@ def data_grab_save_preproc(sub,subs_path,preproc_path,b_dirs=6,H=5,Nc=16,N_patch
         f.create_dataset('Ybase',               data=this_subject.Y_base[:,1:].numpy())
         f.create_dataset('mask_train',          data=this_subject.mask_train.numpy())
         f.create_dataset('interp_matrix',       data=torch.from_numpy(np.asarray(this_subject.diff_input.interpolation_matrices)))
+        f.create_dataset('Xmean',               data=this_subject.Xmean)
+        f.create_dataset('Xstd',                data=this_subject.Xstd)
+        f.create_dataset('Xflatmean',           data=this_subject.Xflatmean)
+        f.create_dataset('Xflatstd',            data=this_subject.Xflatstd)
+        f.create_dataset('S0Xmean',             data=this_subject.S0Xmean)
+        f.create_dataset('S0Xstd',              data=this_subject.S0Xstd)
+        f.create_dataset('xp',                  data=this_subject.xp)
+        f.create_dataset('yp',                  data=this_subject.yp)
+        f.create_dataset('zp',                  data=this_subject.zp)
+        f.create_dataset('S0',                  data=this_subject.diff_input.vol.get_fdata()[:,:,:,this_subject.diff_input.inds[0]].mean(-1))
+
+
+    
 
 
 

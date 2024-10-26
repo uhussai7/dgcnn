@@ -1,0 +1,6 @@
+MODEL:
+  NAME: 'slim2d'
+  WIDTH_2D: 8
+  WIDTH_3D: 0
+  DEPTH_2D: 8
+  DEPTH_3D: 0
