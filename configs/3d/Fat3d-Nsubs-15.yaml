@@ -1,0 +1,9 @@
+MODEL:
+  NAME: 'fat3d'
+  WIDTH_2D: 0
+  WIDTH_3D: 246
+  DEPTH_2D: 0
+  DEPTH_3D: 7
+
+INPUT:
+  NSUBJECTS: 15

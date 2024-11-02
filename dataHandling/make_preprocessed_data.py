@@ -10,14 +10,14 @@ import sys
 cfg=get_cfg_defaults()
 #cfg.INPUT.N_SUBJECTS=1
 
-test_or_train=sys.argv[1]
+test_or_train='test'#sys.argv[1]
 
 if test_or_train=='train':
     source_path=cfg.PATHS.TRAINING_PATH
     target_path=cfg.PATHS.TRAINING_PREPROC_PATH
 else:
-    source_path=cfg.PATHS.TESTING_PATH
-    target_path=cfg.PATHS.TESTING_PREPROC_PATH
+    source_path=cfg.PATHS.TESTING_ROTATED_PATH
+    target_path=cfg.PATHS.TESTING_ROTATED_PREPROC_PATH
 
 subjects=os.listdir(source_path)
 

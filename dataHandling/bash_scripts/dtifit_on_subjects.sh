@@ -1,5 +1,5 @@
 #!/bin/bash
-
+module load apptainer/1.3.4
 inpath=$1
 outdir=$2
 net=$3

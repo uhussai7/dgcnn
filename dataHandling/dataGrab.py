@@ -9,6 +9,7 @@ import h5py
 from pathlib import Path
 from lightning import LightningDataModule
 from torch.utils.data import DataLoader, Dataset
+from collections import OrderedDict
 
 
 class PreprocDataset(Dataset):
@@ -27,12 +28,22 @@ class PreprocDataset(Dataset):
     def __getitem__(self, idx):
         return self._getitem(idx)
 
+    # def _getitem_with_matrices(self, idx):
+    #     sample = {key: value[idx] for key, value in self.data_list.items()}
+    #     interp_index = sample['interp_inds']
+    #     print(sample['interp_inds'])
+    #     sample['interp_matrix'] = self.interp_matrices[int(interp_index.item())]
+    #     return sample
+
     def _getitem_with_matrices(self, idx):
-        sample = {key: value[idx] for key, value in self.data_list.items()}
-        interp_index = sample['interp_inds']
-        print(sample['interp_inds'])
-        sample['interp_matrix'] = self.interp_matrices[int(interp_index.item())]
-        return sample
+        #out=[self.data_list[key][idx] for key in self.data_list.keys()]
+        interp_index = self.data_list['interp_inds'][idx]
+        #print(sample['interp_inds'])
+        interp_matrix = self.interp_matrices[int(interp_index.item())]
+        return [self.data_list['X'][idx], self.data_list['Y'][idx], 
+                self.data_list['mask_train'][idx], self.data_list['Xflat'][idx],
+                interp_matrix]
+
 
     def _getitem_without_matrices(self, idx):
         #return {key: value[idx] for key, value in self.data_list.items()} #should this really be returning a dictionary?
@@ -79,9 +90,11 @@ class PreprocData(LightningDataModule):
                         data_list.append(self.load_2d_only(f, testing))
                     elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D == 0:
                         data_list.append(self.load_3d_only(f, testing))
-                    elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0:
-                        data_list.append(self.load_mixed(f, s, testing))
+                    elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.REVERSE == True:
+                        data_list.append(self.load_mixed_r(f, s, testing))
                         interp_matrices.append(f['interp_matrix'][:])
+                    elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.REVERSE == False:
+                        data_list.append(self.load_mixed(f,testing))
                     else:
                         raise Exception('Invalid config')
         else:
@@ -94,30 +107,46 @@ class PreprocData(LightningDataModule):
                     data_list.append(self.load_2d_only(f, testing))
                 elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D == 0:
                     data_list.append(self.load_3d_only(f, testing))
-                elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0:
-                    data_list.append(self.load_mixed(f, s, testing))
+                elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.REVERSE == True:
+                    data_list.append(self.load_mixed_r(f, s, testing))
                     interp_matrices.append(f['interp_matrix'][:])
+                elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.REVERSE == False:
+                    data_list.append(self.load_mixed(f,testing))
                 else:
                     raise Exception('Invalid config')
 
         return self.dic_cat(data_list), interp_matrices
 
+    #this is done in the following manner so we only load the data that is needed
+    def load_mixed(self,f,testing):
+        if testing is False:
+            keys=['Xflat','Y', 'mask_train']
+            out_dic = OrderedDict((name, torch.tensor(f[name][:])) for name in keys)
+            out_dic['t1t2']=torch.tensor(f['X'][:])[:,:2]
+            return out_dic
+        else:
+            keys=['Xflat','Y', 'mask_train']
+            out_dic= OrderedDict((name, torch.tensor(f[name][:])) for name in keys)
+            out_dic['t1t2']=torch.tensor(f['X'][:])[:,:2]
+            return out_dic
+
     def load_2d_only(self, f, testing):
         if testing is False:
             keys=['Xflat', 'Y', 'mask_train']
-            return {name: torch.tensor(f[name][:]) for name in keys}
+            return OrderedDict((name, torch.tensor(f[name][:])) for name in keys)
         else:
             keys = ['Xflat','Y', 'mask_train']#['S0X', 'Xflat', 'S0Y', 'Y', 'mask_train',]
-            return {name: torch.tensor(f[name][:]) for name in keys}
+            return OrderedDict((name, torch.tensor(f[name][:])) for name in keys)
 
     def load_3d_only(self, f, testing):
-        keys = ['S0X', 'X', 'S0Y', 'Ybase', 'mask_train'] if testing else ['S0X', 'X', 'S0Y', 'Ybase', 'mask_train']
-        return {name: torch.tensor(f[name][:]) for name in keys}
+        #keys = ['S0X', 'X', 'S0Y', 'Ybase', 'mask_train'] if testing else ['S0X', 'X', 'S0Y', 'Ybase', 'mask_train']
+        keys = ['X', 'Ybase', 'mask_train'] if testing else [ 'X', 'Ybase', 'mask_train']
+        return OrderedDict((name, torch.tensor(f[name][:])) for name in keys)
 
-    def load_mixed(self, f, s, testing):
-        keys = ['S0X', 'X', 'Xflat', 'S0Y', 'Y', 'mask_train'] if testing else ['X', 'Xflat', 'Y', 'mask_train']
-        this_data = {name: torch.tensor(f[name][:]) for name in keys}
-        interp_inds = torch.zeros(this_data['Xflat'].shape[0])
+    def load_mixed_r(self, f, s, testing):
+        keys = ['S0X', 'X', 'Xflat', 'interp_matrix', 'S0Y', 'Y', 'mask_train'] if testing else ['X', 'Y', 'mask_train', 'Xflat']
+        this_data = OrderedDict((name, torch.tensor(f[name][:])) for name in keys)
+        interp_inds = torch.zeros(this_data['X'].shape[0])
         interp_inds[:] = s
         this_data['interp_inds'] = interp_inds
         return this_data
@@ -133,7 +162,7 @@ class PreprocData(LightningDataModule):
         return out_d
 
     def train_dataloader(self):
-        dataset = PreprocDataset(self.data_list, self.interp_matrices if self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 else None)
+        dataset = PreprocDataset(self.data_list, self.interp_matrices if self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.REVERSE == True else None)
         return DataLoader(dataset, batch_size=self.batch_size, num_workers=self.num_workers)
 
     def val_dataloader(self):
@@ -142,7 +171,7 @@ class PreprocData(LightningDataModule):
 
     def predict_dataloader(self):
         # The setup method ensures data is loaded correctly for testing
-        dataset = PreprocDataset(self.data_list, self.interp_matrices if self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 else None)
+        dataset = PreprocDataset(self.data_list, self.interp_matrices if self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.REVERSE == True else None)
         return DataLoader(dataset, batch_size=self.batch_size, num_workers=self.num_workers)
 
     def teardown(self, stage=None):

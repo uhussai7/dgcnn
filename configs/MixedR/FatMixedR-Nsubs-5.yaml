@@ -1,0 +1,10 @@
+MODEL:
+  NAME: 'fatMixedR'
+  WIDTH_2D: 32
+  WIDTH_3D: 224
+  DEPTH_2D: 4
+  DEPTH_3D: 3
+  REVERSE: True
+
+INPUT:
+  NSUBJECTS: 5

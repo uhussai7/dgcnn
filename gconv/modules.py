@@ -17,7 +17,7 @@ from torch.nn import ModuleList
 from torch.nn import DataParallel
 from torch.nn import Linear
 from torch.nn import Sequential
-from .icosahedron import sphere_to_flat_basis
+from .icosahedron import sphere_to_flat_basis, icomesh
 import os
 import lightning as L
 from torch.nn.functional import mse_loss
@@ -55,7 +55,6 @@ class TimingCallback(L.Callback):
         avg_epoch_time = sum(self.epoch_times) / len(self.epoch_times)
         print(f"Average epoch time: {avg_epoch_time:.4f} seconds")
 
-
 class DgcnnTrainer(L.Trainer):
     """
     Class for training the encoder
@@ -90,9 +89,14 @@ class DNet(L.LightningModule):
         elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D == 0:
             print("Using 3d only model")
             return Lit3dOnly(self.cfg,*args,**kwargs)
-        elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0:
-            print("Using mixed model")
+        elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.REVERSE == True:
+            print("Using reversed mixed model (3d first)")
+            return LitMixedR(self.cfg,*args,**kwargs)
+        elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.REVERSE == False:
+            print("Using mixed model (2d first)")
             return LitMixed(self.cfg,*args,**kwargs)
+        else:
+            raise Exception('Invalid config')    
 
     def configure_optimizers(self,*args,**kwargs):
         return self.model.configure_optimizers(*args,**kwargs)
@@ -109,8 +113,96 @@ class DNet(L.LightningModule):
     def forward(self,*args,**kwargs):
         return self.model.forward(*args,**kwargs)
     
-
 class LitMixed(L.LightningModule):
+
+    def __init__(self,cfg,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+        self.cfg=cfg
+        self.Ndirs=cfg.MODEL.NDIRS
+
+
+        self.ico=icomesh(m=int(cfg.INPUT.H)-1)
+        self.I, self.J, self.T = d12.padding_basis(H=cfg.INPUT.H)
+
+        C=int(self.cfg.MODEL.WIDTH_2D)
+        depth_2d=int(self.cfg.MODEL.DEPTH_2D)
+        filterlist2d=[1] 
+        [filterlist2d.append(C) for i in range(0, depth_2d)]
+        filterlist2d[-1]=self.cfg.INPUT.NSHELLS
+        activationlist2d = [F.relu for i in range(0,len(filterlist2d)-1)] #2d layers activatiions
+
+        #define the 3d block
+        C_3d=int(self.cfg.MODEL.WIDTH_3D) #has to be some multiple of Ndirs because we use Ndirs of the channels to project them down
+        depth_3d=int(self.cfg.MODEL.DEPTH_3D)
+        filterlist3d=[3] #3d layers, 9 = 2 (T1,T2) + 1 (one gradient direction, rest in batch)
+        [filterlist3d.append(C_3d) for i in range(0, depth_3d)]
+        filterlist3d[-1]=1
+        activationlist3d = [F.relu for i in range(0,len(filterlist3d)-1)] #3d layers activatiions
+        activationlist3d[-1]=None
+
+        self.model_2d=Sequential(OrderedDict(
+                    [
+                        ('move2batch',in2d()),
+                        ('gconv',gnet3d(self.cfg.INPUT.H,filterlist2d,self.cfg.INPUT.NSHELLS,activationlist2d)),
+                        ('move2batch_inv',out2d(self.cfg.TRAIN.BATCH_SIZE,self.cfg.INPUT.NC,self.cfg.INPUT.NSHELLS)),
+                    ]
+                   ))
+        
+        self.move2batch_3d=in3d(self.ico.core_basis)
+        
+        self.model_3d= Sequential(OrderedDict(
+                        [   
+                            ('conv3d',conv3dList(filterlist3d, activationlist3d)),
+                            ('move2batch_inv_3d',out3d(self.cfg.TRAIN.BATCH_SIZE,self.cfg.INPUT.NC,int(self.ico.core_basis.sum()),self.ico.core_basis_inv,
+                                                       self.I[0],self.J[0],self.ico.zeros))
+                        ]
+                        ))
+
+    def training_step(self,batch, batch_idx):
+        x,y,mask,t1t2=batch#batch['Xflat'],batch['Y'],batch['mask_train'] #we need mask too, so different data loaders are needed
+        
+        
+        x,y=x.unsqueeze(-3),y.unsqueeze(-3)
+
+        y_hat=self.model_2d(x)
+        y_hat=self.move2batch_3d(y_hat)
+
+
+        t1t2=t1t2.expand(y_hat.shape[0],-1,self.cfg.INPUT.NC,self.cfg.INPUT.NC,self.cfg.INPUT.NC)
+        y_hat=torch.cat([t1t2,y_hat],dim=1)
+        y_hat=self.model_3d(y_hat)
+
+        y=y-x #import for residual
+
+        loss=mse_loss(y[mask==1,:,:],y_hat[mask==1,:,:])
+        #self.log("train_loss", loss)
+        return loss
+    
+    def predict_step(self,batch, batch_idx):
+        x,y,mask,t1t2=batch#batch['Xflat'],batch['Y'],batch['mask_train'] #we need mask too, so different data loaders are needed
+        x,y=x.unsqueeze(-3),y.unsqueeze(-3)
+
+        y_hat=self.model_2d(x)
+        y_hat=self.move2batch_3d(y_hat)
+        t1t2=t1t2.expand(y_hat.shape[0],-1,self.cfg.INPUT.NC,self.cfg.INPUT.NC,self.cfg.INPUT.NC)
+        y_hat=torch.cat([t1t2,y_hat],dim=1)
+        y_hat=self.model_3d(y_hat)
+
+        return y_hat
+
+    def configure_optimizers(self):
+        optimizer = optim.Adamax(list(self.model_2d.parameters()) + list(self.model_3d.parameters()), lr=self.cfg.TRAIN.LR)  # , weight_decay=0.001)
+        scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=self.cfg.TRAIN.FACTOR,
+                                      patience=self.cfg.TRAIN.PATIENCE,
+                                      verbose=True)
+        return {'optimizer': optimizer,
+                'lr_scheduler': {'scheduler': scheduler,
+                                 'monitor': 'train_loss'  # Replace 'val_loss' with the metric you want to monitor
+                                }
+                }
+
+class LitMixedR(L.LightningModule):
     def __init__(self,cfg,*args,**kwargs):
         super().__init__(*args,**kwargs)
 
@@ -134,7 +226,7 @@ class LitMixed(L.LightningModule):
         activationlist2d[-1]=None
 
         #get the icosahedron
-        ico=icosahedron(m=int(cfg.INPUT.H)-1)
+        ico=icosahedron.icomesh(m=int(cfg.INPUT.H)-1)
         I, J, T = d12.padding_basis(H=cfg.INPUT.H) 
 
         self.model = residualnetScalars(filterlist3d,
@@ -151,10 +243,12 @@ class LitMixed(L.LightningModule):
                                         ico)
 
     def training_step(self,batch, batch_idx):
-        x,y,w,mask=batch #we need mask too, so different data loaders are needed
-        y_hat=self.model(x,w)
+        x,y,mask,xflat,w=batch #we need mask too, so different data loaders are needed
+        y_hat0,y_hat=self.model(x,w[0].float()) #this might not work with batch size changes
+
+        y=y-xflat
+
         loss=mse_loss(y[mask==1,:,:],y_hat[mask==1,:,:])
-        self.log("train_loss", loss)
         return loss
 
     def predict_step(self, batch, batch_idx):
@@ -202,6 +296,9 @@ class Lit2dOnly(L.LightningModule): #only the 2d conv
         x,y,mask=batch#batch['Xflat'],batch['Y'],batch['mask_train'] #we need mask too, so different data loaders are needed
         x,y=x.unsqueeze(-3),y.unsqueeze(-3)
         y_hat=self.model(x)
+        
+        y=y-x #residual
+
         loss=mse_loss(y[mask==1,:,:],y_hat[mask==1,:,:])
         #self.log("train_loss", loss)
         return loss
@@ -211,8 +308,6 @@ class Lit2dOnly(L.LightningModule): #only the 2d conv
         x,y=x.unsqueeze(-3),y.unsqueeze(-3)
         y_hat=self.model(x)
         return y_hat
-
-
 
     def configure_optimizers(self):
         optimizer = optim.Adamax(self.model.parameters(), lr=self.cfg.TRAIN.LR)  # , weight_decay=0.001)
@@ -226,9 +321,8 @@ class Lit2dOnly(L.LightningModule): #only the 2d conv
                 }
 
     def forward(self,x):
-        return self.model(x)
+        return self.predict_step(x)
          
-
 class Lit3dOnly(L.LightningModule): #only takes 3d convs
     def __init__(self,cfg,*args,**kwargs):        
         super().__init__(*args,**kwargs)  
@@ -249,8 +343,13 @@ class Lit3dOnly(L.LightningModule): #only takes 3d convs
     def training_step(self, batch, batch_idx):
         x,y,mask=batch #we need mask too, so different data loaders are needed
         y_hat=self.model(x)
-        loss=mse_loss(y[mask==1],y_hat[mask==1])
-        self.log("train_loss", loss)
+        #print(y.shape,y_hat.shape)
+        #print(x.shape)
+        #mask=mask[:,None,:,:,:]
+        y=y-x[:,3:]  #this part is import for residual architecture
+        y=y.moveaxis(1,-1)
+        y_hat=y_hat.moveaxis(1,-1)
+        loss=mse_loss(y[mask==1].float(),y_hat[mask==1].float())
         return loss
 
     def predict_step(self, batch, batch_idx):
@@ -270,7 +369,6 @@ class Lit3dOnly(L.LightningModule): #only takes 3d convs
 
     def forward(self,x):
         return self.model(x)
-
 
 class to_icosahedron(Module):
     """
@@ -326,11 +424,16 @@ class out3d(Module):
 
     def forward(self,x):
         #x will have shape [B*Ncore, C, Nc, Nc, Nc]
+        # print(1,x.shape)
         C = x.shape[1]
         x = x.view(self.B,self.Ncore,C,self.Nc,self.Nc,self.Nc)
+        # print(2,x.shape)
         x = x[:, self.core_inv, :, :, :, :]  # shape is [B,h,w,C,Nc,Nc,Nc])
+        # print(3,x.shape)
         x = x[:, self.I, self.J, :, :, :, :] #padding
+        # print(4,x.shape)
         x = x.moveaxis((1, 2, 3), (-2, -1, -3))
+        # print(5,x.shape)
         x[:, :, :, :, :, self.zeros == 1] = 0 #zeros
 
         return x
@@ -541,7 +644,6 @@ class twoToThree(Module):
 
         return x0,x
     
-
 class residualnetScalars(Module):
     def __init__(self, filterlist3d, activationlist3d, filterlist2d, activationlist2d, H, Nshells, Nc,I, J,Nscalar,Ndir,ico):
         super(residualnetScalars, self).__init__()
@@ -579,16 +681,11 @@ class residualnetScalars(Module):
         x= self.two2t(x)
         return x
     
-
-
-
 #here we should build the models but we have to keep things simple,
 
 #- we have two modules 3d and 2d.
 #-- we have to do just 3d and just 2d.
 #-- we have to do varying 3d and 2d depth, width
-
-
 #we will take instructions from the config file and build the model
 
 #we will have 3d layers, 2d layers and mapping between them.
@@ -606,6 +703,5 @@ class residualnetScalars(Module):
 # -- lets keep total depth fixed since we know this is what is needed for super res
 # -- so params are: 1) width, 2) 3d/2d depth, and 3) swap (the swap is tricky)
 # -- I think we should stick to 3d first and argue that the 2d is what is upsampling (this is the best option)
-
 
 #if 3d is on then we project otherwise we don't?
