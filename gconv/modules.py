@@ -28,6 +28,22 @@ from . import dihedral12 as d12
 from pathlib import Path
 import timeit
 
+class MemoryLoggerCallback(L.Callback):
+    def on_train_batch_end(self,trainer, pl_module, outputs, batch, batch_idx):
+        if torch.cuda.is_available():
+            allocated = torch.cuda.memory_allocated(0)# / (1024 ** 3)  # in GB
+            max_allocated = torch.cuda.max_memory_allocated(0) #/ (1024 ** 3)  # in GB
+            #print(f"Memory Usage Before First Epoch: Allocated: {allocated:.2f} GB, Max Allocated: {max_allocated:.2f} GB")
+            trainer.logger.log_metrics({'Memory': allocated}, step=trainer.current_epoch)
+        else:
+            print("No GPU available for memory logging.")
+    # def on_train_epoch_end(self, trainer, pl_module):
+    #         """Logs GPU memory usage at the end of each epoch."""
+    #         if torch.cuda.is_available():
+    #             memory_used = torch.cuda.memory_allocated(0) / (1024 ** 3)  # in GB
+    #             max_memory_used = torch.cuda.max_memory_allocated(0) / (1024 ** 3)  # in GB
+    #             print(f"End of Epoch {trainer.current_epoch}: Memory Used: {memory_used:.2f} GB, Max Memory Used: {max_memory_used:.2f} GB")
+
 # Timing callback
 class TimingCallback(L.Callback):
     def __init__(self):
@@ -97,6 +113,14 @@ class DNet(L.LightningModule):
             return LitMixed(self.cfg,*args,**kwargs)
         else:
             raise Exception('Invalid config')    
+        
+    def on_train_batch_end(self, outputs, batch, batch_idx):
+        # Log GPU memory usage
+        allocated_memory = torch.cuda.memory_allocated() / (1024 ** 2)  # Convert to MB
+        reserved_memory = torch.cuda.memory_reserved() / (1024 ** 2)  # Convert to MB
+        
+        self.log('gpu_memory_allocated', allocated_memory)
+        self.log('gpu_memory_reserved', reserved_memory)
 
     def configure_optimizers(self,*args,**kwargs):
         return self.model.configure_optimizers(*args,**kwargs)
@@ -252,7 +276,9 @@ class LitMixedR(L.LightningModule):
         return loss
 
     def predict_step(self, batch, batch_idx):
-        pass
+        x,y,mask,xflat,w=batch #we need mask too, so different data loaders are needed
+        y_hat0,y_hat=self.model(x,w[0].float()) #this might not work with batch size changes
+        return y_hat
 
     def configure_optimizers(self):
         optimizer = optim.Adamax(self.model.parameters(), lr=self.cfg.TRAIN.LR)  # , weight_decay=0.001)
@@ -353,7 +379,15 @@ class Lit3dOnly(L.LightningModule): #only takes 3d convs
         return loss
 
     def predict_step(self, batch, batch_idx):
-        pass
+        x,y,mask=batch #we need mask too, so different data loaders are needed
+        y_hat=self.model(x)
+        #print(y.shape,y_hat.shape)
+        #print(x.shape)
+        #mask=mask[:,None,:,:,:]
+        #yhat=y-x[:,3:]  #this part is import for residual architecture
+        #y=y.moveaxis(1,-1)
+
+        return y_hat.moveaxis(1,-1)
 
     def configure_optimizers(self):
         optimizer = optim.Adamax(self.model.parameters(), lr=self.cfg.TRAIN.LR)  # , weight_decay=0.001)

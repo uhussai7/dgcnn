@@ -53,24 +53,34 @@ print(diff_path_source)
 subjects=os.listdir(diff_path_source)
 dirs=[6,90]
 for sub in subjects:
+    a,b,c=random.randint(0,90),random.randint(0,90),random.randint(0,90)
     for dir in dirs:
+        print('------------------------------------------------------------')
         print(sub)
+        print('Ndirs',dir)
+
         
         #get the orginal
         subj_path_source=os.path.join(diff_path_source,sub,'diffusion',str(dir),'diffusion','bvecs')
         bvecs_orig=read_bvecs(subj_path_source)
+
+        print('Source',subj_path_source)
         
         #rotate
-        bvecs_rotated=rotate_bvecs(bvecs_orig,[random.randint(0,90),random.randint(0,90),random.randint(0,90)])
+        bvecs_rotated=rotate_bvecs(bvecs_orig,[a,b,c])
         
         #set target path
         subj_path_target=os.path.join(diff_path_target,sub,'diffusion',str(dir),'diffusion','bvecs')
         write_bvecs(bvecs_rotated,subj_path_target)
 
+        print('Target',subj_path_target)
+
+
         #save original
         subj_path_target=os.path.join(diff_path_target,sub,'diffusion',str(dir),'diffusion','bvecs_orig')
         write_bvecs(bvecs_orig,subj_path_target)
 
+        print('------------------------------------------------------------')
 
 #read the six direction
 

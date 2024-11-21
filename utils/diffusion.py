@@ -14,6 +14,7 @@ import nibabel as nib
 import dipy
 import os
 from .cutnifti import cuts_and_pad
+import random
 
 class dti():
     """
@@ -529,10 +530,77 @@ class diffVolume():
             write_bvec_comp(fbvec, 2, diffout.shape[-1]-bval_inds[c])
             fbvec.close()
 
+    def randomBvecs(self, basepath,Nrand=6,cut_pad = True):
+        """
+        
+        """
+
+        Ndirs=len(self.bvecs_sorted[1]) 
+
+        bvec_inds=random.sample(range(0,Ndirs),Nrand)
+        
+        print('the bvec inds are: ',bvec_inds)
+
+        
+        #cuts=np.linspace(6,Ndirs,10).astype(int) #okay so rather than doing cuts do randome 6 directions
+        #cuts[-1]=Ndirs #incase this is different from rounding
+        
+        bval_inds=np.linspace(1,len(self.bvecs_sorted[0]),10).astype(int)
+        bval_inds[-1]=len(self.bvecs_sorted[0])
+
+        print(bval_inds)
+
+        def write_bvec_comp(fbvec,xyz,inds):
+            for i in inds:
+                fbvec.write(str(self.bvecs_sorted[1][i,xyz]) + ' ')
+            fbvec.write("\n")
+
+        print('downsampling with '+ str(len(bvec_inds))+ ' random directions')
 
 
+        c=0 #should this be changed
+        diffout=np.zeros(self.vol.shape[0:3] +(len(bvec_inds)+bval_inds[c],))
+        diffout[:,:,:,0:bval_inds[c]]=self.vol.get_fdata()[:,:,:,self.inds[0][0:bval_inds[c]]] #increae b0 steadily also
+        diffout[:,:,:,bval_inds[c]:]=self.vol.get_fdata()[:,:,:,self.inds[1][bvec_inds]]
 
+        path = basepath + '/' + str(Nrand) + '/diffusion/'
+        S0_mean=np.copy(diffout[:,:,:,0:bval_inds[c]])
+        S0_mean=S0_mean.mean(-1)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        
+        S0_mean=nib.Nifti1Image(S0_mean, self.vol.affine)
+        diffout=nib.Nifti1Image(diffout,self.vol.affine)
+        
+        if cut_pad:
+            nib.save(cuts_and_pad(diffout),path + "/data.nii.gz")
+            nib.save(cuts_and_pad(self.mask) , path+ "/nodif_brain_mask.nii.gz")
+            nib.save(cuts_and_pad(S0_mean),path+'/S0mean.nii.gz')
+        else:
+            nib.save(cuts_and_pad(diffout),path + "/data.nii.gz")
+            nib.save(cuts_and_pad(self.mask) , path+ "/nodif_brain_mask.nii.gz")
+            nib.save(cuts_and_pad(S0_mean),path+'/S0mean.nii.gz')
 
+        fbval = open(path + '/bvals', "w")
+        for i in range(0,bval_inds[c]):
+            fbval.write(str(self.bvals_sorted[0][i]) + " ") #write the b0 bval
+        for i in range(0, diffout.shape[-1]-bval_inds[c]):
+            print(i)
+            fbval.write(str(self.bvals_sorted[1][i]) + " ") #wirte the remaining bvals
+        fbval.close()
 
+        fbvec = open(path + '/bvecs', "w")
+        for i in range(0,bval_inds[c]):
+            fbvec.write(str(self.bvecs_sorted[0][i,0]) + " ") #b0 x dir
+        write_bvec_comp(fbvec,0,bvec_inds) #remaining x dirs
 
+        for i in range(0,bval_inds[c]):
+            fbvec.write(str(self.bvecs_sorted[0][i, 1]) + " ")
+        write_bvec_comp(fbvec, 1, bvec_inds)
 
+        for i in range(0,bval_inds[c]):
+            fbvec.write(str(self.bvecs_sorted[0][i, 2]) + " ")
+        write_bvec_comp(fbvec, 2, bvec_inds)
+        fbvec.close()
+
+    

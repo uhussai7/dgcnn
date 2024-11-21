@@ -47,7 +47,6 @@ def make_loss_mask_and_structural(in_path,sub,sub_dir):
     print('Making mask for loss computation for subject:', str(sub))
     ref=nib.load(in_path + sub + '/T1w/Diffusion/nodif_brain_mask.nii.gz') #reference for resampling
     
-    
     #all the mask stuff: we have to add two masks and then also bring to diffusion space
     mask_all_wm = nib.load(sub_dir + '/freesurfer_mask' + '/mask_all_wm.nii.gz')
     mask_gm = nib.load(sub_dir + '/freesurfer_mask' + '/mask_gm.nii.gz')

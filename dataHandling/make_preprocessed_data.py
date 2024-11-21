@@ -19,10 +19,15 @@ else:
     source_path=cfg.PATHS.TESTING_ROTATED_PATH
     target_path=cfg.PATHS.TESTING_ROTATED_PREPROC_PATH
 
-subjects=os.listdir(source_path)
+# subjects=[102816,  104820,  108020,  130518,  150019,  194746,  211417,  304727,  395251,  436239,  693764,  723141 , 952863,
+# 103111,  107321 , 127731,  144125,  172332,  202113,  211821,  310621,  406836,  561949,  695768,  902242]
+# #os.listdir(source_path)
+subjects=[  130518,    194746,   304727,  436239,  693764,  723141 , 952863,
+103111,  107321 , 127731,  144125,  172332,  202113,  211821,  310621,  406836,  561949,  695768]
 
 for sub in subjects:
-    data_grab_save_preproc(sub,source_path,target_path)
+    print(sub)
+    data_grab_save_preproc(str(sub),source_path,target_path)
 
 # out_path=cfg.PATHS.TRAINING_PREPROC_PATH
 # f= h5py.File(str(out_path) + subjects[0] +'/data.h5','r')

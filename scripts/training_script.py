@@ -9,16 +9,47 @@ import numpy as np
 import h5py
 import nibabel as nib
 from pathlib import Path
+from lightning.pytorch.callbacks import DeviceStatsMonitor, ModelCheckpoint
+from pytorch_lightning.loggers import CSVLogger
+
 cfg=get_cfg_defaults()
 cfg.merge_from_file(cfg.PATHS.CONFIG_PATH + sys.argv[1])
 data_module=PreprocData(cfg)
 trainer=DgcnnTrainer(cfg,devices=torch.cuda.device_count(),
-                     strategy='ddp_find_unused_parameters_true',callbacks=[TimingCallback()],
+                     strategy='ddp_find_unused_parameters_true',callbacks=[TimingCallback()],#,MemoryLoggerCallback()],
                      max_epochs=cfg.TRAIN.MAX_EPOCHS)
 model=DNet(cfg)
-trainer.fit(model,datamodule=data_module)
+
+# trainer.fit(model,datamodule=data_module)
 
 
+#handle the versioning correctly
+version=int(sys.argv[2]) if len(sys.argv) >2 else 0
+root_dir=trainer.default_root_dir
+checkpoint_path=root_dir+'/lightning_logs/version_%d/checkpoints/'%version
+resume_checkpoint=None
+if version is None:
+    trainer.fit(model,datamodule=data_module)
+else:
+    if os.path.exists(checkpoint_path):
+        checkpoints=os.listdir(checkpoint_path)
+        if len(checkpoints)>0:
+            print('These are the checkpoints in the version provided...',checkpoints)
+            epochs=np.asarray([int(checkpoint.split('epoch=')[1].split('-')[0]) for checkpoint in checkpoints])
+            max_epoch_ind=np.argsort(epochs)[-1]
+            max_epoch=epochs[max_epoch_ind]
+            resume_checkpoint=checkpoint_path+checkpoints[max_epoch_ind]
+        else:
+            print('No checkpoints found, will put checkpoints from training in the version provided')
+    else:
+        print('Version is provided but version path does not exist. I will make it.')
+        Path(checkpoint_path).mkdir(parents=True,exist_ok=True)
+    checkpoint_callback = ModelCheckpoint(dirpath=checkpoint_path)    
+    logger=CSVLogger(save_dir=root_dir,version=version)
+    trainer=DgcnnTrainer(cfg,devices=torch.cuda.device_count(),
+                     strategy='ddp_find_unused_parameters_true',callbacks=[TimingCallback(),checkpoint_callback],#,MemoryLoggerCallback()],
+                     max_epochs=cfg.TRAIN.MAX_EPOCHS)
+    trainer.fit(model,datamodule=data_module,ckpt_path=resume_checkpoint)
 
 
 

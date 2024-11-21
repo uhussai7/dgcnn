@@ -108,7 +108,7 @@ class PreprocData(LightningDataModule):
                 elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D == 0:
                     data_list.append(self.load_3d_only(f, testing))
                 elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.REVERSE == True:
-                    data_list.append(self.load_mixed_r(f, s, testing))
+                    data_list.append(self.load_mixed_r(f, 0, testing))
                     interp_matrices.append(f['interp_matrix'][:])
                 elif self.cfg.MODEL.DEPTH_3D > 0 and self.cfg.MODEL.DEPTH_2D > 0 and self.cfg.MODEL.REVERSE == False:
                     data_list.append(self.load_mixed(f,testing))

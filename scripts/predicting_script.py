@@ -11,26 +11,85 @@ import h5py
 import nibabel as nib
 from pathlib import Path
 from utils.models import predictor,create_dir_name
+import argparse
+
+#add parser
+
+parser = argparse.ArgumentParser(
+        description="Script for predicting"
+    )
+
+parser.add_argument(
+    '-v', '--version',
+    type=int,
+    default=0,
+    help='If continuing from last checkpoint provide the version'
+)
+
+parser.add_argument(
+    '-c', '--config',
+    type=str,
+    required=True,
+    help='Model config file'
+)
+
+parser.add_argument(
+    '-t', '--transform',
+    type=str,
+    default='None',
+    help='Rotate or randomize bvecs'
+)
+
+args=parser.parse_args()
+print(args)
+
+
+
 
 cfg=get_cfg_defaults()
-cfg.merge_from_file(cfg.PATHS.CONFIG_PATH + '/SlimMixed.yaml')#'/Slim2d_Nsubs-15.yaml')
-opts=["PATHS.TESTING_PREPROC_PATH",cfg.PATHS.TESTING_ROTATED_PREPROC_PATH]
-cfg.merge_from_list(opts)
-subj='211417'
-version=2
+cfg.merge_from_file(cfg.PATHS.CONFIG_PATH +args.config)#@'/Mixed/FatMixed-Nsubs-15.yaml') #'/Mixed/SlimMixed.yaml')#'/Slim2d_Nsubs-15.yaml')
 
-checkpoint_path=os.path.join(create_dir_name(cfg),'lightning_logs','version_%d'%version,'checkpoints')
-checkpoints=os.listdir(checkpoint_path)
-print('These are the checkpoints',checkpoints)
-epochs=np.asarray([int(checkpoint.split('epoch=')[1].split('-')[0]) for checkpoint in checkpoints])
-max_epoch_ind=np.argsort(epochs)[-1]
-max_epoch=epochs[max_epoch_ind]
-resume_checkpoint=os.path.join(checkpoint_path,checkpoints[max_epoch_ind])
-print('Loading checkpoint:',resume_checkpoint)
-model=DNet.load_from_checkpoint(resume_checkpoint,cfg=cfg)
+transform='regular'
+if args.transform == 'rotate':
+    transform='rotate'
+    print('Using rotated bvecs')
+    opts=["PATHS.TESTING_PREPROC_PATH",cfg.PATHS.TESTING_ROTATED_PREPROC_PATH]
+    cfg.merge_from_list(opts)
+if args.transform == 'random':
+    transform='random'
+    print('Using random bvecs')
+    opts=["PATHS.TESTING_PREPROC_PATH",cfg.PATHS.TESTING_RANDOM_PREPROC_PATH]
+    cfg.merge_from_list(opts)
 
-pred=predictor(cfg,model,subj,os.path.join(create_dir_name(cfg),'lightning_logs','version_%d'%version))
-pred.predict()
+version = args.version
+
+subjs= os.listdir(cfg.PATHS.TESTING_PREPROC_PATH) #'211417'
+
+
+for subj in subjs:
+    checkpoint_path=os.path.join(create_dir_name(cfg),'lightning_logs','version_%d'%version,'checkpoints')
+    checkpoints=os.listdir(checkpoint_path)
+    print('These are the checkpoints',checkpoints)
+    epochs=np.asarray([int(checkpoint.split('epoch=')[1].split('-')[0]) for checkpoint in checkpoints])
+    max_epoch_ind=np.argsort(epochs)[-1]
+    max_epoch=epochs[max_epoch_ind]
+    resume_checkpoint=os.path.join(checkpoint_path,checkpoints[max_epoch_ind])
+    print('Loading checkpoint:',resume_checkpoint)
+    model=DNet.load_from_checkpoint(resume_checkpoint,cfg=cfg)
+
+    path_to_save=os.path.join(cfg.PATHS.MODELS_PATH,
+                              cfg.MODEL.NAME,
+                              'Nsubs-%d'%int(cfg.INPUT.NSUBJECTS),
+                              'lightning_logs',
+                              'version_%d'%version,
+                              'predictions',
+                              transform,
+                              str(subj),
+                              'diffusion'
+                                )
+
+    pred=predictor(cfg,model,subj,path_to_save)
+    pred.predict()
 
 
 # import icosahedron

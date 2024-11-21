@@ -17,7 +17,7 @@ out_path = '/home/u2hussai/dgcnn/dataHandling/subjects_lists/training.txt'
 N_subs=25 #number of subjects to choose
 
 list_filename='/home/u2hussai/dgcnn/dataHandling/subjects_lists/testing.txt' #name of output list
-ico
+
 #convert to lists
 all_subs=os.listdir(input_path)
 exist_subs=[]
