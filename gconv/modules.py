@@ -31,9 +31,9 @@ import timeit
 class MemoryLoggerCallback(L.Callback):
     def on_train_batch_end(self,trainer, pl_module, outputs, batch, batch_idx):
         if torch.cuda.is_available():
-            allocated = torch.cuda.memory_allocated(0)# / (1024 ** 3)  # in GB
-            max_allocated = torch.cuda.max_memory_allocated(0) #/ (1024 ** 3)  # in GB
-            #print(f"Memory Usage Before First Epoch: Allocated: {allocated:.2f} GB, Max Allocated: {max_allocated:.2f} GB")
+            allocated = torch.cuda.memory_allocated(0) / (1024 ** 3)  # in GB
+            max_allocated = torch.cuda.max_memory_allocated(0) / (1024 ** 3)  # in GB
+            print(f"Memory Usage Before First Epoch: Allocated: {allocated:.2f} GB, Max Allocated: {max_allocated:.2f} GB")
             trainer.logger.log_metrics({'Memory': allocated}, step=trainer.current_epoch)
         else:
             print("No GPU available for memory logging.")

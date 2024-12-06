@@ -13,6 +13,8 @@ from utils.models import predictor,create_dir_name
 import argparse
 import subprocess
 import nibabel as nib
+from pathlib import Path
+import pickle
 
 #add parser
 
@@ -91,6 +93,11 @@ predictions_path=os.path.join(create_dir_name(cfg),'lightning_logs','version_%d'
 
 subjs=os.listdir(predictions_path)
 
+accuracy_summary={'dFA_6':[],
+                  'dtheta_6':[],
+                  'dFA_model':[],
+                  'dtheta_model':[]}
+
 for subj in subjs:
     mask_path=os.path.join(cfg.PATHS.TESTING_PATH,subj,'masks','mask.nii.gz')
     
@@ -114,26 +121,48 @@ for subj in subjs:
 
     # print(V1_gt.shape)
 
-    FA_6_metric=diff(FA_gt,FA_6).mean()
-    FA_pred_metric=diff(FA_gt,FA_pred).mean()
+    FA_6_metric=np.nanmean(diff(FA_gt,FA_6))
+    FA_pred_metric=np.nanmean(diff(FA_gt,FA_pred))
 
-    V1_6_metric=angle(V1_gt,V1_6).mean()
-    V1_pred_metric=angle(V1_gt,V1_pred).mean()
+    V1_6_metric=np.nanmean(angle(V1_gt,V1_6))
+    V1_pred_metric=np.nanmean(angle(V1_gt,V1_pred))
 
-    print('------------------------------------------------------------------------------')
-    print('subj-%s'%str(subj))
-    print('FA_6_metric:%f'%FA_6_metric)
-    print('FA_pred_metric:%f'%FA_pred_metric)
-    print('V1_6_metric:%f'%V1_6_metric)
-    print('V1_pred_metric:%f'%V1_pred_metric)
-    print('------------------------------------------------------------------------------')
-    print('\n')
-    print('\n')
+    # print('------------------------------------------------------------------------------')
+    # print('subj-%s'%str(subj))
+    # print('FA_6_metric:%f'%FA_6_metric)
+    # print('FA_pred_metric:%f'%FA_pred_metric)
+    # print('V1_6_metric:%f'%V1_6_metric)
+    # print('V1_pred_metric:%f'%V1_pred_metric)
+    # print('------------------------------------------------------------------------------')
+    # print('\n')
+    # print('\n')
+
+    accuracy_summary['dFA_6'].append(FA_6_metric)
+    accuracy_summary['dtheta_6'].append(V1_6_metric)
+    accuracy_summary['dFA_model'].append(FA_pred_metric)
+    accuracy_summary['dtheta_model'].append(V1_pred_metric)
+
+accuracy_summary['dFA_6'] = np.asarray(accuracy_summary['dFA_6'])
+accuracy_summary['dtheta_6'] = np.asarray(accuracy_summary['dtheta_6'])
+accuracy_summary['dFA_model'] = np.asarray(accuracy_summary['dFA_model'])
+accuracy_summary['dtheta_model'] = np.asarray(accuracy_summary['dtheta_model'])
+
+print('---------------------------------SUMMARY--------------------------------------')
+print('FA_6_metric:%.4f,%.4f'%(accuracy_summary['dFA_6'].mean(),accuracy_summary['dFA_6'].std()))
+print('FA_pred_metric:%.4f,%.4f'%(accuracy_summary['dFA_model'].mean(),accuracy_summary['dFA_model'].std()))
+print('V1_6_metric:%.4f,%.4f'%(accuracy_summary['dtheta_6'].mean(),accuracy_summary['dtheta_6'].std()))
+print('V1_pred_metric:%.4f,%.4f'%(accuracy_summary['dtheta_model'].mean(),accuracy_summary['dtheta_model'].std()))
+print('------------------------------------------------------------------------------')
+print('\n')
+print('\n')
 
 
+accuracy_path=Path(os.path.join(create_dir_name(cfg),'lightning_logs','version_%d'%version,'accuracy',transform))
 
+accuracy_path.mkdir(parents=True, exist_ok=True)
 
-
+with open(str(accuracy_path) +'/accuracy_summary.pkl', 'wb') as f:
+    pickle.dump(accuracy_summary, f)
 
     
 
